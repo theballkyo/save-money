@@ -31,23 +31,12 @@ export default {
   },
   methods: {
     ...mapActions([
-      'loginRequest',
-      'loginSuccess',
-      'loginFail'
+      'facebookLoginRequest'
     ]),
     authenticate: function (provider) {
-      this.loginRequest()
-      window.FB.login(response => {
-        if (response.status === 'connected') {
-          const profile = {
-            fb_token: response.authResponse.accessToken,
-            fb_uid: response.authResponse.userID
-          }
-          this.loginSuccess(profile)
-        } else {
-          this.loginFail()
-        }
-      }, {scope: 'email,user_friends', auth_type: 'rerequest'})
+      if (provider === 'facebook') {
+        this.facebookLoginRequest()
+      }
     }
   }
 }
