@@ -1,0 +1,11 @@
+// Auth module
+export const AUTH_LOGIN_REQUEST = 'AUTH_LOGIN_REQUEST'
+export const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS'
+export const AUTH_LOGIN_FAIL = 'AUTH_LOGIN_FAIL'
+
+export const AUTH_LOGOUT_REQUEST = 'AUTH_LOGOUT_REQUEST'
+export const AUTH_LOGOUT = 'AUTH_LOGOUT'
+
+// Wallet module
+export const WALLET_CREATE = 'WALLET_CREATE'
+export const WALLET_ADD_MONEY = 'WALLET_ADD_MONEY'
