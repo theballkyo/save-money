@@ -65,7 +65,7 @@ export default {
   data () {
     return {
       drawer: true,
-      items: [
+      defaultItems: [
         {
           action: 'local_activity',
           title: 'Attractions',
@@ -74,14 +74,14 @@ export default {
           ]
         },
         {
+          action: 'local_activity',
+          title: 'Create new wallet'
+        },
+        {
           action: 'restaurant',
-          title: 'Wallet',
+          title: 'My wallet',
           active: true,
-          items: [
-            { title: 'Create new wallet' },
-            { title: 'My wallet #1' },
-            { title: 'My wallet #2' }
-          ]
+          items: []
         }
       ],
       right: null
@@ -95,7 +95,34 @@ export default {
         }
         return `Hello guest`
       }
-    })
+      // items: state => {
+      //   let wallets = state.wallet.wallet.map(wallet => { return { title: wallet.name } })
+      //   return [
+      //     {
+      //       action: 'local_activity',
+      //       title: 'Attractions',
+      //       items: [
+      //         { title: 'List Item' }
+      //       ]
+      //     },
+      //     {
+      //       action: 'restaurant',
+      //       title: 'Wallet',
+      //       active: true,
+      //       items: wallets
+      //     }
+      //   ]
+      // }
+    }),
+    items () {
+      let wallets = this.$store.state.wallet.wallet.map(wallet => { return { title: wallet.name } })
+      let items = this.defaultItems
+      items[2].items = wallets
+      return items
+    }
+  },
+  mounted () {
+    this.wallets
   }
 }
 </script>

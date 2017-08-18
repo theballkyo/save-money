@@ -13,14 +13,8 @@ const actions = {
       commit(types.WALLET_CREATE_FAILURE, { failureMsg })
       return
     }
-    let nameIsSame = false
     commit(types.WALLET_CREATING)
-    state.wallet.forEach(wallet => {
-      if (wallet.name === name) {
-        nameIsSame = true
-      }
-    })
-    if (nameIsSame) {
+    if (state.wallet.find((wallet) => wallet.name === name)) {
       const failureMsg = `Name is same`
       commit(types.WALLET_CREATE_FAILURE, { failureMsg })
     } else {
@@ -58,4 +52,5 @@ export default {
   state,
   actions,
   mutations
+  // namespaced: true
 }
