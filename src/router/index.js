@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import Wallet from '@/components/wallet/Layout'
+import WalletLayout from '@/components/wallet/Layout'
 import WalletHome from '@/components/wallet/Home'
+import WalletView from '@/components/wallet/View'
 
 Vue.use(Router)
 
@@ -16,16 +17,18 @@ export default new Router({
     },
     {
       path: '/wallet',
-      component: Wallet,
+      component: WalletLayout,
       children: [
         {
-          path: '/',
+          path: '',
           name: 'WalletHome',
           component: WalletHome
         },
         {
-          path: '/:id',
-          name: 'Wallet'
+          path: ':name',
+          name: 'WalletView',
+          component: WalletView,
+          props: true
         }
       ]
     }

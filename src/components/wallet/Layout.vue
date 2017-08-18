@@ -33,7 +33,7 @@
               <v-icon>keyboard_arrow_down</v-icon>
             </v-list-tile-action>
           </v-list-tile>
-          <v-list-tile v-for="subItem in item.items" v-bind:key="subItem.title">
+          <v-list-tile v-for="subItem in item.items" v-bind:key="subItem.title" :to="{name: 'WalletView', params: {name: subItem.title}}">
             <v-list-tile-content>
               <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
             </v-list-tile-content>
@@ -65,7 +65,7 @@ export default {
   data () {
     return {
       drawer: true,
-      defaultItems: [
+      items: [
         {
           action: 'local_activity',
           title: 'Attractions',
@@ -89,40 +89,34 @@ export default {
   },
   computed: {
     ...mapState({
-      'welcomeMsg': state => {
+      welcomeMsg: state => {
         if (state.auth.isLoggedIn) {
           return `Hello, User`
         }
         return `Hello guest`
+      },
+      wallets: state => {
+        return state.wallet.wallet
       }
-      // items: state => {
-      //   let wallets = state.wallet.wallet.map(wallet => { return { title: wallet.name } })
-      //   return [
-      //     {
-      //       action: 'local_activity',
-      //       title: 'Attractions',
-      //       items: [
-      //         { title: 'List Item' }
-      //       ]
-      //     },
-      //     {
-      //       action: 'restaurant',
-      //       title: 'Wallet',
-      //       active: true,
-      //       items: wallets
-      //     }
-      //   ]
-      // }
-    }),
-    items () {
-      let wallets = this.$store.state.wallet.wallet.map(wallet => { return { title: wallet.name } })
-      let items = this.defaultItems
-      items[2].items = wallets
-      return items
+    })
+  },
+  watch: {
+    wallets (val) {
+      this.updateItems(val)
+    }
+  },
+  methods: {
+    updateItems (wallets) {
+      let wallets_ = Object.keys(wallets).map((current) => {
+        return {
+          title: current
+        }
+      })
+      this.items[2].items = wallets_
     }
   },
   mounted () {
-    this.wallets
+    this.updateItems(this.wallets)
   }
 }
 </script>

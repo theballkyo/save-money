@@ -1,7 +1,8 @@
 import * as types from '../mutations'
+import storage from '@/utils/storage'
 
 const state = {
-  wallet: [],
+  wallet: storage.getItem('wallet.wallet', {}),
   createStatus: null,
   failureMsg: ''
 }
@@ -14,26 +15,20 @@ const actions = {
       return
     }
     commit(types.WALLET_CREATING)
-    if (state.wallet.find((wallet) => wallet.name === name)) {
+    if (state.wallet[name]) {
       const failureMsg = `Name is same`
       commit(types.WALLET_CREATE_FAILURE, { failureMsg })
     } else {
       commit(types.WALLET_CREATE, { name })
-      setTimeout(() => {
-        commit(types.WALLET_CREATE_SUCCESS)
-        console.log(`Creat wallet name ${name} successfully`)
-      }, 1)
+      commit(types.WALLET_CREATE_SUCCESS)
     }
   }
 }
 
 const mutations = {
   [types.WALLET_CREATE] (state, {name}) {
-    state.wallet.push({
-      name,
-      createAt: new Date(),
-      statement: []
-    })
+    state.wallet = {...state.wallet, [name]: {createdAt: new Date(), statements: []}}
+    window.localStorage.setItem('wallet.wallet', JSON.stringify(state.wallet))
   },
   [types.WALLET_CREATE_SUCCESS] (state) {
     state.createStatus = 'success'

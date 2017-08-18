@@ -55,10 +55,15 @@ export default {
     ...mapState({
       isLoggedIn: state => state.auth.isLoggedIn,
       createStatus: state => state.wallet.createStatus,
-      failureMsg: state => {
-        return state.wallet.failureMsg
-      }
+      failureMsg: state => state.wallet.failureMsg
     })
+  },
+  watch: {
+    createStatus (val) {
+      if (val === 'success') {
+        // this.$router.push({name: 'WalletView', params: { name: this.walletName }})
+      }
+    }
   },
   methods: {
     ...mapActions([

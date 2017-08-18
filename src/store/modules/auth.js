@@ -1,9 +1,10 @@
 import * as types from '../mutations.js'
+import storage from '@/utils/storage'
 
 const state = {
-  isLoggedIn: false,
+  isLoggedIn: storage.getItem('auth.isLoggedIn', false),
   loginStatus: null,
-  profile: null
+  profile: storage.getItem('auth.profile', null)
 }
 
 const actions = {
@@ -37,11 +38,15 @@ const mutations = {
     state.isLoggedIn = false
     state.loginStatus = 'request'
     state.profile = null
+    window.localStorage.setItem('auth.isLoggedIn', false)
+    window.localStorage.setItem('auth.profile', null)
   },
   [types.AUTH_LOGIN_SUCCESS] (state, { profile }) {
     state.isLoggedIn = true
     state.loginStatus = null
     state.profile = {...profile}
+    window.localStorage.setItem('auth.isLoggedIn', true)
+    window.localStorage.setItem('auth.profile', JSON.stringify(profile))
   },
   [types.AUTH_LOGIN_FAILURE] (state) {
     state.isLoggedIn = false
