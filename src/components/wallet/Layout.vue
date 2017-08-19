@@ -21,6 +21,11 @@
             <v-list-tile-title v-text="welcomeMsg"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile to="/wallet/">
+          <v-list-tile-content>
+            <v-list-tile-title v-text="'หน้าแรก'"></v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <v-list-group v-for="item in items" :value="item.active" v-bind:key="item.title">
           <v-list-tile slot="item">
             <v-list-tile-action>
@@ -42,10 +47,15 @@
             </v-list-tile-action>
           </v-list-tile>
         </v-list-group>
+        <v-list-tile v-if="isLoggedIn" @click="onLogout">
+          <v-list-tile-content>
+            <v-list-tile-title v-text="'Logout'"></v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar class="cyan" dark>
-      <v-toolbar-title>Toolbar</v-toolbar-title>
+      <v-toolbar-title>App name</v-toolbar-title>
     </v-toolbar>
     <main>
       <v-container fluid>
@@ -59,24 +69,13 @@
   </v-app>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'wallet_layout',
   data () {
     return {
       drawer: true,
       items: [
-        {
-          action: 'local_activity',
-          title: 'Attractions',
-          items: [
-            { title: 'List Item' }
-          ]
-        },
-        {
-          action: 'local_activity',
-          title: 'Create new wallet'
-        },
         {
           action: 'restaurant',
           title: 'My wallet',
@@ -89,6 +88,7 @@ export default {
   },
   computed: {
     ...mapState({
+      isLoggedIn: state => state.auth.isLoggedIn,
       welcomeMsg: state => {
         if (state.auth.isLoggedIn) {
           return `Hello, User`
@@ -106,13 +106,21 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'logout'
+    ]),
     updateItems (wallets) {
       let wallets_ = Object.keys(wallets).map((current) => {
         return {
           title: current
         }
       })
-      this.items[2].items = wallets_
+      this.items[0].items = wallets_
+    },
+    onLogout () {
+      this.logout()
+      console.log('logout')
+      this.$router.push('/wallet/')
     }
   },
   mounted () {

@@ -77,7 +77,10 @@ export default {
     },
     onCreateWalletClick () {
       if (this.createStatus === 'creating') return
-      this.createWallet(this.walletName)
+      const status = this.createWallet(this.walletName)
+      if (status) {
+        this.$router.push({name: 'WalletView', params: { name: this.walletName }})
+      }
     }
   }
 }

@@ -11,6 +11,9 @@ const actions = {
   loginRequest ({ commit }) {
     commit(types.AUTH_LOGIN_REQUEST)
   },
+  logout ({ commit }) {
+    commit(types.AUTH_LOGOUT)
+  },
   facebookLoginRequest ({ commit }) {
     commit(types.AUTH_LOGIN_REQUEST)
     window.FB.login(response => {
@@ -51,6 +54,13 @@ const mutations = {
   [types.AUTH_LOGIN_FAILURE] (state) {
     state.isLoggedIn = false
     state.loginStatus = 'failure'
+  },
+  [types.AUTH_LOGOUT] (state) {
+    state.isLoggedIn = false
+    state.loginStatus = null
+    state.profile = null
+    window.localStorage.setItem('auth.isLoggedIn', false)
+    window.localStorage.setItem('auth.profile', null)
   }
 }
 
