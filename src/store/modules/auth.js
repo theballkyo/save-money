@@ -14,7 +14,7 @@ const actions = {
   logout ({ commit }) {
     commit(types.AUTH_LOGOUT)
   },
-  facebookLoginRequest ({ commit }) {
+  facebookLoginRequest ({ commit, dispatch }) {
     commit(types.AUTH_LOGIN_REQUEST)
     window.FB.login(response => {
       if (response.status === 'connected') {
@@ -23,6 +23,7 @@ const actions = {
           fb_uid: response.authResponse.userID
         }
         commit(types.AUTH_LOGIN_SUCCESS, { profile })
+        dispatch('getName')
       } else {
         commit(types.AUTH_LOGIN_FAILURE)
       }
@@ -33,6 +34,11 @@ const actions = {
   },
   loginFailure ({ commit }) {
     commit(types.AUTH_LOGIN_FAILURE)
+  },
+  getName ({ commit }) {
+    window.FB.api('/me', {fields: 'first_name,last_name'}, response => {
+      commit(types.AUTH_SET_PROFILE, {name: `${response.first_name} ${response.last_name}`})
+    })
   }
 }
 
@@ -61,6 +67,10 @@ const mutations = {
     state.profile = null
     window.localStorage.setItem('auth.isLoggedIn', false)
     window.localStorage.setItem('auth.profile', null)
+  },
+  [types.AUTH_SET_PROFILE] (state, { name }) {
+    state.profile = {...state.profile, name}
+    window.localStorage.setItem('auth.profile', JSON.stringify(state.profile))
   }
 }
 

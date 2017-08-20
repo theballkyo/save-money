@@ -18,7 +18,7 @@
       <v-list>
         <v-list-tile>
           <v-list-tile-content>
-            <v-list-tile-title v-text="welcomeMsg"></v-list-tile-title>
+            <v-list-tile-title v-text="`Welcome ${name}`"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile to="/wallet/">
@@ -97,6 +97,14 @@ export default {
       },
       wallets: state => {
         return state.wallet.wallet
+      },
+      name: state => {
+        if (state.auth.isLoggedIn && state.auth.profile.name) {
+          const profile = state.auth.profile
+          return profile.name
+        } else {
+          return 'Guest'
+        }
       }
     })
   },
@@ -119,7 +127,6 @@ export default {
     },
     onLogout () {
       this.logout()
-      console.log('logout')
       this.$router.push('/wallet/')
     }
   },
