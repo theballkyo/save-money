@@ -13,6 +13,12 @@ const getters = {
     let total = 0
     state.wallet[name].transactions.forEach(t => { total += t.amount })
     return total
+  },
+  getWallet: (state, getters) => name => {
+    return state.wallet[name]
+  },
+  hasWallet: (state) => name => {
+    return !!state.wallet[name]
   }
 }
 
