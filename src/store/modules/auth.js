@@ -24,6 +24,7 @@ const actions = {
         }
         commit(types.AUTH_LOGIN_SUCCESS, { profile })
         dispatch('getName')
+        dispatch('getPicture')
       } else {
         commit(types.AUTH_LOGIN_FAILURE)
       }
@@ -37,7 +38,12 @@ const actions = {
   },
   getName ({ commit }) {
     window.FB.api('/me', {fields: 'first_name,last_name'}, response => {
-      commit(types.AUTH_SET_PROFILE, {name: `${response.first_name} ${response.last_name}`})
+      commit(types.AUTH_SET_PROFILE, { field: 'name', value: `${response.first_name} ${response.last_name}` })
+    })
+  },
+  getPicture ({ commit }) {
+    window.FB.api('/me/picture', response => {
+      commit(types.AUTH_SET_PROFILE, { field: 'picture', value: response.data.url })
     })
   }
 }
@@ -68,8 +74,9 @@ const mutations = {
     window.localStorage.setItem('auth.isLoggedIn', false)
     window.localStorage.setItem('auth.profile', null)
   },
-  [types.AUTH_SET_PROFILE] (state, { name }) {
-    state.profile = {...state.profile, name}
+  [types.AUTH_SET_PROFILE] (state, { field, value }) {
+    state.profile = {...state.profile, [field]: value}
+    console.log(state.profile)
     window.localStorage.setItem('auth.profile', JSON.stringify(state.profile))
   }
 }

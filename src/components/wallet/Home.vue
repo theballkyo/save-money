@@ -18,21 +18,10 @@
                 <v-subheader>Wallet name</v-subheader>
               </v-flex>
               <v-flex xs8>
-                <v-text-field
-                  name="wallet-name"
-                  label="Wallet name"
-                  v-model="walletName"
-                ></v-text-field>
+                <v-text-field name="wallet-name" label="Wallet name" v-model="walletName"></v-text-field>
               </v-flex>
             </v-layout>
-            <v-btn
-              class='btn--extra'
-              info
-              large
-              :loading="createStatus==='creating'"
-              @click.native="onCreateWalletClick"
-              :disabled="createStatus==='creating'"
-            >Create wallet</v-btn>
+            <v-btn class='btn--extra' info large :loading="createStatus==='creating'" @click.native="onCreateWalletClick" :disabled="createStatus==='creating'">Create wallet</v-btn>
           </v-container>
         </v-card-text>
       </v-card>
@@ -79,9 +68,13 @@ export default {
       if (this.createStatus === 'creating') return
       const status = this.createWallet(this.walletName)
       if (status) {
-        this.$router.push({name: 'WalletView', params: { name: this.walletName }})
+        this.$router.push({ name: 'WalletView', params: { name: this.walletName } })
       }
     }
+  },
+  mounted () {
+    // Set title bar
+    this.$store.dispatch('setTitleBar', `Home`)
   }
 }
 </script>

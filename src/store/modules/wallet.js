@@ -2,8 +2,40 @@ import * as types from '../mutations'
 import storage from '@/utils/storage'
 import moment from 'moment'
 
+const defaultCategories = [
+  {
+    name: 'Food',
+    icon: '',
+    sub: [
+      {
+        name: 'Noodle',
+        icon: ''
+      },
+      {
+        name: 'Buffet',
+        icon: ''
+      }
+    ]
+  },
+  {
+    name: 'Drink',
+    icon: '',
+    sub: [
+      {
+        name: 'Coke',
+        icon: ''
+      },
+      {
+        name: 'Pepsi',
+        icon: ''
+      }
+    ]
+  }
+]
+
 const state = {
   wallet: storage.getItem('wallet.wallet', {}),
+  categories: storage.getItem('wallet.categories', defaultCategories),
   createStatus: null,
   failureMsg: ''
 }
@@ -46,7 +78,13 @@ const actions = {
 
 const mutations = {
   [types.WALLET_CREATE] (state, {name}) {
-    state.wallet = {...state.wallet, [name]: {createdAt: moment(), transactions: []}}
+    let wallet = {
+      createdAt: moment(),
+      currency: 'THB', // Default
+      totalAmount: 0,
+      transactions: []
+    }
+    state.wallet = {...state.wallet, [name]: wallet}
     window.localStorage.setItem('wallet.wallet', JSON.stringify(state.wallet))
   },
   [types.WALLET_CREATE_SUCCESS] (state) {

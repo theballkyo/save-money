@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import app from './modules/app'
 import auth from './modules/auth'
 import wallet from './modules/wallet'
 // import createPersistedState from 'vuex-persistedstate'
@@ -11,6 +12,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   //
   modules: {
+    app,
     auth,
     wallet
   },

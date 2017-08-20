@@ -1,22 +1,9 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p v-if="loginStatus !== 'request'">
-      <button @click="authenticate('facebook')" class="loginBtn loginBtn--facebook">
-  Login with Facebook
-</button>
-<button class="loginBtn loginBtn--google">
-  Login with Google
-</button>
-    </p>
-    <p>
-      Or sign in as guest
-    </p>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
 export default {
   name: 'hello',
   data () {
@@ -24,26 +11,14 @@ export default {
       msg: 'App name'
     }
   },
-  computed: {
-    ...mapState({
-      loginStatus: state => state.auth.loginStatus
-    })
-  },
-  methods: {
-    ...mapActions([
-      'facebookLoginRequest'
-    ]),
-    authenticate: function (provider) {
-      if (provider === 'facebook') {
-        this.facebookLoginRequest()
-      }
-    }
+  mounted () {
+    this.$router.push('/wallet/')
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 h1, h2 {
   font-weight: normal;
 }

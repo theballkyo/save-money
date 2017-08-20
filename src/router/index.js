@@ -25,6 +25,11 @@ export default new Router({
           component: WalletHome
         },
         {
+          path: 'categories',
+          name: 'WalletCategories',
+          component: WalletHome
+        },
+        {
           path: ':name',
           name: 'WalletView',
           component: WalletView,

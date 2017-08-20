@@ -1,3 +1,6 @@
+// App module
+export const APP_SET_TITLE_BAR = 'APP_SET_TITLE_BAR'
+
 // Auth module
 export const AUTH_LOGIN_REQUEST = 'AUTH_LOGIN_REQUEST'
 export const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS'
