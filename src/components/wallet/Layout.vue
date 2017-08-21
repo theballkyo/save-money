@@ -1,11 +1,6 @@
 <template>
   <v-app id="" toolbar>
     <v-navigation-drawer persistent absolute height="100%" clipped enable-resize-watcher v-model="drawer" light>
-      <!-- <v-toolbar flat>
-          <v-list>
-            <v-list-tile tag="div">Save money</v-list-tile>
-          </v-list>
-        </v-toolbar> -->
       <v-divider></v-divider>
       <v-list>
         <v-list-tile avatar tag="div">
