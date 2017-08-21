@@ -67,11 +67,11 @@
       <v-container fluid>
         <router-view></router-view>
       </v-container>
+      <v-footer class="pa-3">
+        <v-spacer></v-spacer>
+        <div>© {{ new Date().getFullYear() }} Zone-Gamer</div>
+      </v-footer>
     </main>
-    <v-footer class="pa-3">
-      <v-spacer></v-spacer>
-      <div>© {{ new Date().getFullYear() }} Zone-Gamer</div>
-    </v-footer>
   </v-app>
 </template>
 <script>
@@ -143,7 +143,9 @@ export default {
 </script>
 
 <style>
-/* Shared */
+.application--toolbar>main>.container {
+  min-height: calc(100vh - 140px);
+}
 
 .loginBtn {
   box-sizing: border-box;
