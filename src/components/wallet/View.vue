@@ -216,13 +216,28 @@ export default {
       'addTransaction'
     ]),
     onAdd () {
-      this.addTransaction({
-        type: this.type,
+      let transaction = {
+        type: this.type.value,
         walletName: this.name,
         category: this.category,
         amount: this.amount,
         currency: 'THB'
-      })
+      }
+
+      if (this.type.value === 2) {
+        let transactionTo = {
+          ...transaction,
+          walletName: this.transferToWallet,
+          transferFrom: this.name
+        }
+
+        this.addTransaction(transactionTo)
+
+        transaction.transferTo = this.transferToWallet
+      }
+
+      this.addTransaction(transaction)
+
       this.currentTabId = 'tab-2'
     },
     changeSort (column) {
@@ -270,8 +285,9 @@ export default {
     },
     formatDate (value) {
       if (value) {
-        return moment(String(value)).format('YYYY/MM/DD hh:mm')
+        return moment.parseZone(String(value)).local().format('YYYY/MM/DD HH:mm:ss')
       }
+      return ''
     }
   },
   mounted () {

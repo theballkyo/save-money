@@ -71,8 +71,8 @@ const actions = {
       return true
     }
   },
-  addTransaction ({ commit }, { walletName, category, amount, currency, type }) {
-    commit(types.WALLET_ADD_TRANSACTION, { walletName, category, amount, currency, type })
+  addTransaction ({ commit }, { walletName, category, amount, currency, type, transferTo = null, transferFrom = null }) {
+    commit(types.WALLET_ADD_TRANSACTION, { walletName, category, amount, currency, type, transferTo, transferFrom })
   }
 }
 
@@ -98,14 +98,16 @@ const mutations = {
     state.failureMsg = ''
     state.createStatus = 'creating'
   },
-  [types.WALLET_ADD_TRANSACTION] (state, { walletName, category, amount, currency, type }) {
+  [types.WALLET_ADD_TRANSACTION] (state, { walletName, category, amount, currency, type, transferTo, transferFrom }) {
     amount = parseFloat(amount)
     const transaction = {
       type,
       category,
       amount,
       currency,
-      createdAt: moment({})
+      transferTo,
+      transferFrom,
+      createdAt: moment()
     }
 
     let wallet = state.wallet[walletName]
