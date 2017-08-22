@@ -73,6 +73,9 @@ const actions = {
   },
   addTransaction ({ commit }, { walletName, category, amount, currency, type, transferTo = null, transferFrom = null }) {
     commit(types.WALLET_ADD_TRANSACTION, { walletName, category, amount, currency, type, transferTo, transferFrom })
+  },
+  changeSettings ({ commit }, { walletName, newSettings }) {
+    commit(types.WALLET_CHANGE_SETTINGS, { walletName, newSettings })
   }
 }
 
@@ -80,7 +83,9 @@ const mutations = {
   [types.WALLET_CREATE] (state, {name}) {
     let wallet = {
       createdAt: moment(),
-      currency: 'THB', // Default
+      settings: {
+        currency: 'THB' // Default
+      },
       totalAmount: 0,
       transactions: []
     }
@@ -98,8 +103,10 @@ const mutations = {
     state.failureMsg = ''
     state.createStatus = 'creating'
   },
-  [types.WALLET_ADD_TRANSACTION] (state, { walletName, category, amount, currency, type, transferTo, transferFrom }) {
+  [types.WALLET_ADD_TRANSACTION] (state, { walletName, category, amount, type, transferTo, transferFrom }) {
     amount = parseFloat(amount)
+    let wallet = state.wallet[walletName]
+    const currency = wallet.currency
     const transaction = {
       type,
       category,
@@ -110,13 +117,17 @@ const mutations = {
       createdAt: moment()
     }
 
-    let wallet = state.wallet[walletName]
     if (!wallet.transactions) {
       wallet.transactions = []
     }
 
     state.wallet[walletName].transactions.push(transaction)
     // Save to localStorage
+    window.localStorage.setItem('wallet.wallet', JSON.stringify(state.wallet))
+  },
+  [types.WALLET_CHANGE_SETTINGS] (state, { walletName, newSettings }) {
+    let wallet = state.wallet[walletName]
+    wallet.settings = {...wallet.settings, ...newSettings}
     window.localStorage.setItem('wallet.wallet', JSON.stringify(state.wallet))
   }
 }
